@@ -53,7 +53,7 @@ export default function Home() {
           </div>
           <input
             type="text"
-            className={`block w-full pl-12 pr-12 py-4 md:py-5 md:text-lg border-0 rounded-2xl shadow-xl bg-white/80 backdrop-blur-md text-slate-900 placeholder:text-slate-400 focus:bg-white transition-all outline-none ${isLoading ? 'ring-2 ring-blue-400 shadow-blue-100' : 'ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500'}`}
+            className={`block w-full pl-12 pr-12 py-4 md:py-5 md:text-lg border-0 rounded-2xl shadow-xlsm bg-white/80 backdrop-blur-md text-slate-900 placeholder:text-slate-400 focus:bg-white transition-all outline-none ${isLoading ? 'ring-2 ring-blue-400 shadow-blue-100' : 'ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-500'}`}
             placeholder="Type a village name (e.g., Gorakhpur)..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}

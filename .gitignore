@@ -1,8 +1,8 @@
-﻿"node_modules/
+node_modules/
 .next/
 .env
 data/
 client/
 generated/
-*.csv" | Out-File -Encoding utf8 .gitignore
-node_modules
+csv files/
+*.csv

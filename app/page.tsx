@@ -5,6 +5,7 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedVillage, setSelectedVillage] = useState<any>(null);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -102,9 +103,10 @@ export default function Home() {
             </div>
           )}
 
-          {!isLoading && results.map((v: any, index: number) => (
+          {!isLoading && Array.isArray(results) && results.map((v: any, index: number) => (
             <div 
               key={v.id} 
+              onClick={() => setSelectedVillage(v)}
               className="group bg-white p-5 rounded-2xl shadow-sm ring-1 ring-slate-200 hover:shadow-lg hover:ring-blue-300 transition-all duration-300 cursor-pointer flex items-start gap-4 md:gap-5 animate-in slide-in-from-bottom-4 fade-in fill-mode-both"
               style={{ animationDelay: `${index * 50}ms` }}
             >
@@ -146,6 +148,75 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Google Maps Modal */}
+      {selectedVillage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/40 backdrop-blur-sm"
+          onClick={(e) => { if (e.target === e.currentTarget) setSelectedVillage(null); }}
+        >
+          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 sm:p-6 border-b border-slate-100">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">
+                  {selectedVillage.name.replace(/\s*\(\d+\)\s*$/, '')}
+                </h2>
+                <p className="text-slate-500 mt-1">
+                  {selectedVillage.subDistrict?.name || 'N/A'}, {selectedVillage.subDistrict?.district?.name || 'N/A'}, {selectedVillage.subDistrict?.district?.state?.name || 'N/A'}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedVillage(null)}
+                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="flex-1 bg-slate-50 p-4 sm:p-6 min-h-[300px] sm:min-h-[400px]">
+              <iframe
+                title="Google Map"
+                width="100%"
+                height="100%"
+                className="rounded-2xl border-0 shadow-inner bg-slate-200"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                  `${selectedVillage.name.replace(/\s*\(\d+\)\s*$/, '')}, ${selectedVillage.subDistrict?.name || ''}, ${selectedVillage.subDistrict?.district?.name || ''}, ${selectedVillage.subDistrict?.district?.state?.name || ''}, India`
+                )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+              />
+            </div>
+
+            {/* Footer with Directions button */}
+            <div className="p-5 sm:p-6 border-t border-slate-100 flex flex-col sm:flex-row gap-3 justify-end bg-white">
+              <button
+                onClick={() => setSelectedVillage(null)}
+                className="px-6 py-2.5 rounded-xl text-slate-600 font-medium hover:bg-slate-100 transition-colors"
+              >
+                Close
+              </button>
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                  `${selectedVillage.name.replace(/\s*\(\d+\)\s*$/, '')}, ${selectedVillage.subDistrict?.name || ''}, ${selectedVillage.subDistrict?.district?.name || ''}, ${selectedVillage.subDistrict?.district?.state?.name || ''}, India`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-200 transition-all flex items-center justify-center gap-2"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

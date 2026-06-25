@@ -1,0 +1,44 @@
+<h1>Daily Reports</h1>
+<p><strong>Project Name:</strong> Village Locator Application
+<strong>Author:</strong> AdarshKumarSrivastava/phase-2-of-Bluestock (Clint Project)</p>
+<h2>Report 1: Initial Architecture and Setup (2026-04-29)</h2>
+<p><strong>Tasks Completed:</strong></p>
+<ul>
+<li>Initialized the Git repository.</li>
+<li>Scaffolding of the initial Next.js and Prisma architecture.</li>
+<li>Added basic search logic to handle entity querying without loading the heavy datasets into memory.</li>
+<li>Ensured that large datasets (like <code>csv files</code>) were appropriately excluded from being committed.</li>
+</ul>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>Establish the data models in Prisma.</li>
+<li>Create a seeding script to populate the database with the provided demographic data.</li>
+</ul>
+<hr>
+<h2>Report 2: Database and API Foundation (2026-05-01)</h2>
+<p><strong>Tasks Completed:</strong></p>
+<ul>
+<li>Developed <code>prisma/schema.prisma</code> mapping the hierarchy from <code>State</code> to <code>Village</code>.</li>
+<li>Implemented <code>prisma/seed.ts</code> to properly process the multi-gigabyte CSV data efficiently using Node.js file streams and <code>csv-parser</code>.</li>
+<li>Updated <code>.gitignore</code> to prevent generated artifacts, build folders, and massive data files from bloating the repository.</li>
+<li>Built out the initial <code>page.tsx</code> for the main frontend structure.</li>
+</ul>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>Finalize the frontend Vite application (<code>/client</code>).</li>
+<li>Implement the interactive user interface and mapping integrations.</li>
+</ul>
+<hr>
+<h2>Report 3: Feature Integration and Polish (2026-06-16)</h2>
+<p><strong>Tasks Completed:</strong></p>
+<ul>
+<li>Successfully integrated the Google Maps API into the frontend client.</li>
+<li>Built an interactive modal providing users with direct directions to the selected village based on geographic addressing.</li>
+<li>Refined styling and layout across the React interface utilizing Tailwind CSS.</li>
+<li>Did a final pass on <code>.gitignore</code> to guarantee all sensitive and massive files (like <code>.env</code>) are excluded before packaging the codebase for submission.</li>
+</ul>
+<p><strong>Next Steps:</strong></p>
+<ul>
+<li>Package the distinct components (Frontend, Backend, Database, REST API) into separate ZIP files conforming to the 10 MB per-file limitation.</li>
+<li>Draft the Final Technical Documentation for project submission.</li>
+</ul>

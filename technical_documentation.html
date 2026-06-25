@@ -1,0 +1,57 @@
+<h1>Technical Documentation: Village Locator Application</h1>
+<h2>1. Project Overview</h2>
+<p>The Village Locator is a full-stack web application designed to help users search for and locate villages, sub-districts, and districts across various states. The application processes very large demographic datasets (e.g., CSV files exceeding 1.6 GB) and provides a fast, responsive user interface to search through this data and display geographic locations using Google Maps integration.</p>
+<h2>2. Architecture &amp; Technology Stack</h2>
+<p>The project adopts a modern monolithic repository structure with decoupled frontend and backend logic.</p>
+<h3>2.1 Backend / API Layer</h3>
+<ul>
+<li><strong>Framework:</strong> Next.js (App Directory)</li>
+<li><strong>Language:</strong> TypeScript</li>
+<li><strong>Database:</strong> PostgreSQL</li>
+<li><strong>ORM:</strong> Prisma (<code>prisma-client-js</code>)</li>
+<li><strong>Key Modules:</strong><ul>
+<li><code>csv-parser</code> for streaming and seeding large demographic CSV files.</li>
+<li>Next.js API Routes (<code>app/api</code>) to handle RESTful client requests.</li>
+</ul>
+</li>
+</ul>
+<h3>2.2 Frontend / Client Layer</h3>
+<ul>
+<li><strong>Framework:</strong> React 19 via Vite</li>
+<li><strong>Language:</strong> TypeScript</li>
+<li><strong>Styling:</strong> Tailwind CSS (configured at the root level via PostCSS)</li>
+<li><strong>Features:</strong> <ul>
+<li>Dynamic Search Logic</li>
+<li>Google Maps Modal for village directions.</li>
+</ul>
+</li>
+</ul>
+<h2>3. Database Schema (Prisma)</h2>
+<p>The database structure is normalized to reflect the geographic hierarchy:</p>
+<ol>
+<li><strong>State</strong>: <ul>
+<li>Fields: <code>id</code>, <code>code</code> (Unique), <code>name</code></li>
+<li>Relations: One-to-many with District</li>
+</ul>
+</li>
+<li><strong>District</strong>: <ul>
+<li>Fields: <code>id</code>, <code>code</code> (Unique), <code>name</code>, <code>stateId</code></li>
+<li>Relations: One-to-many with SubDistrict</li>
+</ul>
+</li>
+<li><strong>SubDistrict</strong>: <ul>
+<li>Fields: <code>id</code>, <code>code</code> (Unique), <code>name</code>, <code>districtId</code></li>
+<li>Relations: One-to-many with Village</li>
+</ul>
+</li>
+<li><strong>Village</strong>:<ul>
+<li>Fields: <code>id</code>, <code>code</code> (Unique), <code>name</code>, <code>fullAddress</code>, <code>subDistrictId</code></li>
+</ul>
+</li>
+</ol>
+<h2>4. Key Design Decisions</h2>
+<ul>
+<li><strong>Separation of Concerns:</strong> The client interface is hosted under the <code>/client</code> directory (Vite), while server-side rendering and API endpoints leverage the Next.js framework in the root.</li>
+<li><strong>Large Data Processing:</strong> The backend seeding script (<code>prisma/seed.ts</code>) uses streams to parse multi-gigabyte CSV datasets without exceeding memory limits.</li>
+<li><strong>Ignored Artifacts:</strong> <code>.env</code>, <code>.next</code>, <code>node_modules</code>, and heavy raw CSV datasets are explicitly excluded from production builds and Git history to maintain security and portability.</li>
+</ul>

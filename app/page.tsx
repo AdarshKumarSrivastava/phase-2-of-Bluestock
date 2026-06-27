@@ -1,5 +1,18 @@
 'use client';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+
+const MapWithRouting = dynamic(() => import('./components/MapWithRouting'), { 
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[400px] rounded-2xl bg-slate-200 flex items-center justify-center animate-pulse">
+      <div className="flex flex-col items-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
+        <p className="text-slate-500 font-medium">Loading Map Component...</p>
+      </div>
+    </div>
+  )
+});
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -176,19 +189,10 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Embedded Google Map */}
-            <div className="flex-1 bg-slate-50 p-4 sm:p-6 min-h-[300px] sm:min-h-[400px]">
-              <iframe
-                title="Google Map"
-                width="100%"
-                height="100%"
-                className="rounded-2xl border-0 shadow-inner bg-slate-200"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                  `${selectedVillage.name.replace(/\s*\(\d+\)\s*$/, '')}, ${selectedVillage.subDistrict?.name || ''}, ${selectedVillage.subDistrict?.district?.name || ''}, ${selectedVillage.subDistrict?.district?.state?.name || ''}, India`
-                )}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+            {/* Embedded Interactive Map with Routing */}
+            <div className="flex-1 bg-slate-50 p-4 sm:p-6 min-h-[300px] sm:min-h-[400px] flex flex-col relative" style={{ zIndex: 0 }}>
+              <MapWithRouting 
+                destinationAddress={`${selectedVillage.name.replace(/\s*\(\d+\)\s*$/, '')}, ${selectedVillage.subDistrict?.name || ''}, ${selectedVillage.subDistrict?.district?.name || ''}, ${selectedVillage.subDistrict?.district?.state?.name || ''}, India`} 
               />
             </div>
 
